@@ -1,0 +1,44 @@
+﻿<Window x:Class="GuessNumber.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GuessNumber"
+        mc:Ignorable="d"
+        Title="猜数字" Height="330.189" Width="520">
+    <Window.Resources>
+    </Window.Resources>
+    <StackPanel>
+        <Menu>
+            <MenuItem Header="游戏">
+                <MenuItem Header="新游戏" Command="ApplicationCommands.New"></MenuItem>	
+                <MenuItem Header="退出" Command="ApplicationCommands.Close"></MenuItem>	
+			</MenuItem>
+		</Menu>
+        <Border BorderBrush="Black" BorderThickness="1" Height="200" Width="480" Margin="10 20 10 20" Background="#FFECECEC">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                    <TextBox x:Name="textbox1" Style="{StaticResource NumBoxStyle}" KeyDown="textBox_KeyDown" GotFocus="textbox_GotFocus" KeyUp="textbox1_KeyUp"/>
+                    <TextBox x:Name="textbox2" Style="{StaticResource NumBoxStyle}" KeyDown="textBox_KeyDown" GotFocus="textbox_GotFocus" KeyUp="textbox2_KeyUp"/>
+                    <TextBox x:Name="textbox3" Style="{StaticResource NumBoxStyle}" KeyDown="textBox_KeyDown" GotFocus="textbox_GotFocus" KeyUp="textbox3_KeyUp"/>
+                    <TextBox x:Name="textbox4" Style="{StaticResource NumBoxStyle}" KeyDown="textBox_KeyDown" GotFocus="textbox_GotFocus" KeyUp="textbox4_KeyUp"/>
+                </StackPanel>
+                <StackPanel x:Name="imgPanel" Grid.Row="1" Orientation="Horizontal" Visibility="Hidden" Background="White">
+                    <Image x:Name="img1" Style="{StaticResource checkImg}"/>
+                    <Image x:Name="img2" Style="{StaticResource checkImg}"></Image>
+                    <Image x:Name="img3" Style="{StaticResource checkImg}"></Image>
+                    <Image x:Name="img4" Style="{StaticResource checkImg}"></Image>
+                </StackPanel>
+                <Grid Grid.Row="2" x:Name="statusPanel" VerticalAlignment="Center">
+                    <TextBlock x:Name="statusLabel" TextAlignment="Center" FontSize="48">开始猜数字吧!</TextBlock>	
+				</Grid>
+            </Grid>
+        </Border>
+        <Button x:Name="button" Content="确定" Width="70" Height="30" Style="{StaticResource GradientButtonStyle}" FontSize="16" Click="button_Click"/>
+
+    </StackPanel>
+</Window>
