@@ -1,0 +1,17 @@
+﻿<Window x:Class="面包管理系统.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:面包管理系统"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen" Icon="Main.bmp" Closing="Window_Closing">
+    <Grid>
+        <WrapPanel>
+            <Button Width="100" Height="50" Click="ButtonShowStore_Click" Margin="10,5">显示库存</Button>
+            <Button Width="100" Height="50" Click="ButtonSeal_Click" Margin="10,5">销售窗口</Button>
+            <Button Width="100" Height="50" Click="ButtonProduce_Click" Margin="10,5">面包作坊</Button>
+            <Button Width="100" Height="50" Click="ButtonProduceNew_Click" Margin="10,5">制作新面包</Button>
+		</WrapPanel>
+    </Grid>
+</Window>

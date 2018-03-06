@@ -1,0 +1,33 @@
+﻿<Window x:Class="面包管理系统.ProduceNewTypeWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:面包管理系统"
+        mc:Ignorable="d"
+        Title="ProduceNewTypeWin" Height="325.61" Width="300" WindowStartupLocation="CenterOwner">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Label Margin="0,0,5,0">名称：</Label>
+            <TextBox x:Name="tName" VerticalAlignment="Center" Margin="5,0,0,0">面包</TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10" HorizontalAlignment="Center">
+            <Label Margin="0,0,5,0">价格($)：</Label>
+            <TextBox x:Name="tPrice" VerticalAlignment="Center" Margin="5,0,0,0">6.99</TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10" HorizontalAlignment="Center">
+            <Label Margin="0,0,5,0">保质期（天）：</Label>
+            <TextBox x:Name="tDays" Margin="5,0,0,0" VerticalAlignment="Center" Text="7"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10" HorizontalAlignment="Center">
+            <Label Margin="0,0,5,0" VerticalAlignment="Center">图片：</Label>
+            <TextBox x:Name="tImg" Margin="5,0,0,0" VerticalAlignment="Center" MaxWidth="100"/>
+            <Button Click="Button_Select_Click" Margin="5,0,0,0" Height="30">选择图片</Button>
+            <Image x:Name="img" Margin="5,0,0,0" Height="64" Width="64" Visibility="Hidden"></Image>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Center">
+            <Button Click="Button_OK_Click" Margin="0,0,10,0" Height="30" Width="50">确认</Button>
+            <Button Click="Button_Cancel_Click" Margin="10,0,0,0" Height="30" Width="50">取消</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

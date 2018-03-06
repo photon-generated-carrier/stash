@@ -1,0 +1,49 @@
+﻿<Window x:Class="面包管理系统.StoreHouseWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:面包管理系统"
+        mc:Ignorable="d"
+        Title="库存列表" Height="300" Width="550.488" WindowStartupLocation="CenterOwner" Icon="/面包管理系统;component/Bread.ico">
+    <Grid>
+        <Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="150"/>
+		</Grid.ColumnDefinitions>
+        <ListView x:Name="listView" SelectionChanged="listView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Path=Id}"/>
+                    <GridViewColumn Header="类型" DisplayMemberBinding="{Binding Path=TypeName}"/>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="价格" DisplayMemberBinding="{Binding Path=Price, StringFormat={}{0:C}}"/>
+                    <GridViewColumn Header="生产日期" DisplayMemberBinding="{Binding Path=ManufactureDate, StringFormat={}{0:yyyy-MM-dd}}"/>
+                    <GridViewColumn Header="过期时间" DisplayMemberBinding="{Binding Path=ExpirationDate, StringFormat={}{0:yyyy-MM-dd}}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Column="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                <Label Margin="0,0,5,0">名称</Label>
+                <TextBox x:Name="tName" VerticalAlignment="Center" Margin="5,0,0,0">面包</TextBox>
+			</StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10" HorizontalAlignment="Center">
+                <Label Margin="0,0,5,0">价格</Label>
+                <TextBox x:Name="tPrice" VerticalAlignment="Center" Margin="5,0,0,0">6.99</TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <Label Margin="0,0,5,0">生产日期</Label>
+                <TextBox x:Name="tDt1" Margin="5,0,0,0" VerticalAlignment="Center">2017-10-12</TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                <Label Margin="0,0,5,0">过期日期</Label>
+                <TextBox x:Name="tDt2" Margin="5,0,0,0" VerticalAlignment="Center">2017-10-13</TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Center">
+                <Button Click="Button_Change_Click" Margin="0,0,10,0" Height="30" Width="50">更改</Button>
+                <Button Click="Button_Del_Click" Margin="10,0,0,0" Height="30" Width="50">删除</Button>
+			</StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
