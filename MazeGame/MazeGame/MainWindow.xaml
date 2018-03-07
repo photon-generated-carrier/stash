@@ -1,0 +1,21 @@
+﻿<Window x:Class="MazeGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MazeGame"
+        mc:Ignorable="d"
+        Title="MazeGame" Height="350" Width="525" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="文件">
+                <MenuItem Header="新游戏" Click="Menu_NewGame_Click"></MenuItem>
+                <MenuItem Header="退出"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="帮助"></MenuItem>
+        </Menu>
+        <Border BorderThickness="4" BorderBrush="#FF409BEA">
+            <Image x:Name="canvas" MinWidth="360" MinHeight="360"></Image>
+        </Border>
+    </DockPanel>
+</Window>
