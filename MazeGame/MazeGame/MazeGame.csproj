@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Door.cs" />
+    <Compile Include="Man.cs" />
     <Compile Include="MapMidWare.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="MazeGameModel.cs" />

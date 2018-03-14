@@ -8,6 +8,7 @@ namespace MazeGame {
 		// 返回最终停留的房间, 输入进入的节点
 		Room Enter(IMapSite srcSite);
 		bool EnterAble { get; }
+		SiteType Iam();
 	}
 
 	enum SiteType {

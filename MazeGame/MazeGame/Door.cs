@@ -9,6 +9,10 @@ namespace MazeGame {
 		public Door(Room room1, Room room2):base(room1, room2){
 		}
 
+		override public SiteType Iam() {
+			return SiteType.Door;
+		}
+
 		override public bool EnterAble {
 			get {
 				return true;

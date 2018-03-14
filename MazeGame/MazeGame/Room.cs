@@ -9,6 +9,10 @@ namespace MazeGame {
 			_location = location;
 		}
 
+		public virtual SiteType Iam() {
+			return SiteType.Room;
+		}
+
 		public Room Enter(IMapSite srcMapSite) {
 			return this;
 		}

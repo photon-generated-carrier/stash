@@ -44,19 +44,19 @@ namespace MazeGame {
 		// 生成墙
 		public void GenWalls(MazeFactory factory) {
 			GenSimpleTestWalls(factory);
-			GenCharView();
+			GenBorderCharView();
 		}
 
 		// 简单测试墙
 		//|------------------|
 	//in  *  |               |
+		//|  D     D         |
 		//|  |               |
 		//|  |               |
 		//|  |               |
 		//|  |               |
 		//|  |               |
-		//|  |               |
-		//|  |_______________|
+		//|  |_________D_____|
 		//|  -> -> -> -> ->  * out
 		//|------------------|
 		private void GenSimpleTestWalls(MazeFactory factory) {
@@ -67,84 +67,75 @@ namespace MazeGame {
 			for (y = 1; y < _gameSize; y++) {
 				new Wall(GetRoom(x, y), GetRoom(x - 1, y));
 			}
+			new Door(GetRoom(1, 0), GetRoom(1, 1));
+			new Door(GetRoom(1, 1), GetRoom(1, 2));
+			new Door(GetRoom(7, 8), GetRoom(8, 8));
 		}
 
-		// 获取地图的字符表示
-		//2222222222222222222
-		//ba21010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//2121010101010101012
-		//2000000000000000002
-		//211101010101010101c
-		//2222222222222222222
-		private void GenCharView() {
+		// 获取地图的边缘字符表示
+		//22222222222
+		//82000000002
+		//22000000002
+		//22000000002
+		//22000000002
+		//22000000002
+		//22000000002
+		//22000000002
+		//22222222222
+		//22222222229
+		//222222222222
+		private void GenBorderCharView() {
 			_charView = new SiteType[_gameSize * 2 + 1][];
 
 			for (int x = 0; x < _gameSize * 2 + 1; x++) {
-				_charView[x] = new SiteType[_gameSize * 2 + 1];
+				_charView[x] = new SiteType[_gameSize + 1];
 			}
 
 			for (int x = 0; x < _gameSize; x++) {
 				for (int y = 0; y < _gameSize; y++) {
 					Room currentRoom = GetRoom(x, y);
-					if (currentRoom.GetSite(Direction.East) is Wall)
-						SetViewSite(x, y, Direction.East, SiteType.Wall);
-					if (currentRoom.GetSite(Direction.South) is Wall)
-						SetViewSite(x, y, Direction.South, SiteType.Wall);
+					if (currentRoom.GetSite(Direction.East) != null)
+						SetViewSite(x, y, Direction.East, currentRoom.GetSite(Direction.East).Iam());
+					if (currentRoom.GetSite(Direction.South) != null)
+						SetViewSite(x, y, Direction.South, currentRoom.GetSite(Direction.South).Iam());
 				}
             }
 
-			SetViewRoomAndOuterWall();
+			SetOuterWall();
 		}
 
 		public SiteType[][] GetCharView() {
 			return _charView;
 		}
 
-		private void SetViewRoomAndOuterWall() {
-			// rooms
-			for (int x = 0; x < _gameSize; x++) {
-				for (int y = 0; y < _gameSize; y++) {
-					_charView[1 + x * 2][1 + y * 2] = SiteType.Room;
-				}
-			}
-
+		private void SetOuterWall() {
 			// outer wall
-			for (int x = 0; x < _gameSize * 2 + 1; x++) {
+			for (int x = 1; x < _gameSize * 2 + 1; x+=2) {
 				_charView[x][0] = SiteType.Wall;
-				_charView[x][_gameSize * 2] = SiteType.Wall;
+				_charView[x][_gameSize] = SiteType.Wall;
 			}
-			for (int y = 0; y < _gameSize*2 + 1; y++) {
+			for (int y = 0; y < _gameSize + 1; y++) {
 				_charView[0][y] = SiteType.Wall;
-				_charView[_gameSize*2][y] = SiteType.Wall;
+				_charView[_gameSize * 2][y] = SiteType.Wall;
 			}
 		}
 
 		private void SetViewSite(int x, int y, Direction direction, SiteType siteType) {
+			if (siteType == SiteType.Room)
+				return;
+
 			if (direction == Direction.South) {
 				if (x == _gameSize - 1)
 					return;
 
-				_charView[1 + x * 2 + 1][1 + y * 2] = SiteType.Wall;
+				_charView[1 + x * 2 + 1][1 + y]= siteType;
 			}
 
 			if (direction == Direction.East) {
 				if (y == _gameSize - 1)
 					return;
 
-				_charView[1 + x * 2][1 + y * 2 + 1] = SiteType.Wall;
+				_charView[1 + x * 2][1 + y] = siteType;
 			}
 		}
 
@@ -152,7 +143,7 @@ namespace MazeGame {
 		// 没写参数检查哦
 		static public void SetViewEntry(SiteType[][] view, int x, int y, SiteType entryType) {
 			int corX = 1 + x * 2;
-			int corY = 1 + y * 2;
+			int corY = 1 + y;
 			Direction direction;
 			if (x == 0)
 				direction = Direction.West;
@@ -168,7 +159,7 @@ namespace MazeGame {
 			else if (direction == Direction.South)
 				view[corX + 1][corY] = entryType;
 			else if (direction == Direction.East)
-				view[corX][corY + 1] = entryType;
+				view[corX][corY] = entryType;
 			else if (direction == Direction.West)
 				view[corX][corY - 1] = entryType;
 		}

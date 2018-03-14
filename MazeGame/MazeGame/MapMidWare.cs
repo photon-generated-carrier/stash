@@ -33,6 +33,10 @@ namespace MazeGame {
 			room2.SetSite(direction2, this);
 		}
 
+		public virtual SiteType Iam() {
+			return SiteType.None;
+		}
+
 		public virtual Room Enter(IMapSite srcSite) {
 			Room srcRoom = srcSite as Room;
 			if (srcRoom == null || srcRoom != _room1 || srcRoom != _room2)
