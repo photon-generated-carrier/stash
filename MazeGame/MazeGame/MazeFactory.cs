@@ -14,8 +14,22 @@ namespace MazeGame {
 			return _mazeFactory;
 		}
 
-		public virtual Maze MakeMaze(int gameSize) {
-			return new Maze(gameSize); 
+		public virtual Maze MakeMaze(int gameSizeH, int gameSizeW, MazeType mazeType = MazeType.Default) {
+			Maze maze = null;
+			switch(mazeType) {
+				case MazeType.Default:
+					maze = new Maze(gameSizeH, gameSizeW);
+					break;
+				case MazeType.Prime:
+					maze = new MazePrime(gameSizeH, gameSizeW);
+					break;
+				default:
+					break;
+			}
+			maze.InitialRooms(this);
+			maze.GenWalls(this);
+			maze.GenBorderCharView();
+			return maze; 
 		}
 
 		public virtual Wall MakeWall(Room room1, Room room2) {

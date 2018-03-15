@@ -17,7 +17,7 @@ namespace MazeGame {
 		}
 
 		public void SetLocation(Location p) {
-			if (p.X < 0 || p.X >= _gameSize || p.Y < 0 || p.Y >= _gameSize)
+			if (p.X < 0 || p.X >= _gameSizeH || p.Y < 0 || p.Y >= _gameSizeW)
 				return;
 
 			_curLocation = p;
@@ -34,8 +34,9 @@ namespace MazeGame {
 			return _curPosition;
 		}
 
-		public void SetGameSize(int gameSize) {
-			_gameSize = gameSize;
+		public void SetGameSize(int gameSizeH, int gameSizeW) {
+			_gameSizeH = gameSizeH;
+			_gameSizeW = gameSizeW;
 		}
 
 		public void Move(Direction d) {
@@ -58,7 +59,7 @@ namespace MazeGame {
 		}
 
 		public void Down() {
-			if (_curLocation.X < _gameSize) {
+			if (_curLocation.X < _gameSizeH) {
 				_curLocation.X++;
 				_curPosition.X += _roomHeight;
 			}
@@ -82,7 +83,7 @@ namespace MazeGame {
 		}
 
 		public void Right() {
-			if (_curLocation.Y < _gameSize) {
+			if (_curLocation.Y < _gameSizeW) {
 				_curLocation.Y++;
 				_curPosition.Y += _roomWidth;
 			}
@@ -91,7 +92,8 @@ namespace MazeGame {
 
 		private int _roomHeight;
 		private int _roomWidth;
-		private int _gameSize;
+		private int _gameSizeH;
+		private int _gameSizeW;
 		private Location _curLocation = new Location(0, 0); // 虚拟坐标
 		private Location _curPosition = new Location(0, 0); // 画板内的坐标(左少角）
 	}
