@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,6 +13,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MazeGame {
 	/// <summary>
@@ -20,18 +22,28 @@ namespace MazeGame {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
+			_timer.Interval = new TimeSpan(600000);
+			_timer.Tick += _timer_Tick;
 		}
 
-		private const int _gameSize = 9; 
+		private int _gameSizeH = 20;
+		private int _gameSizeW = 30;
+		private MazeType _mazeType = MazeType.Default;
 		private void Menu_NewGame_Click(object sender, RoutedEventArgs e) {
-			_mazeGame = new MazeGameModel(_gameSize);
-			_mazeGame.CreateMaze(_factory);
-			_mazeGame.Man.SetParam(_roomHeight, _roomWidth);
-			SiteType[][] view = _mazeGame.GetView();
-			for (int i = 0; i < view.Count(); i++)
-				Console.WriteLine(view[i].ToIntString());
+			NewGameWin newWin = new NewGameWin();
+			if (newWin.ShowDialog() == true) {
+				_gameSizeH = newWin.GameHeight;
+				_gameSizeW = newWin.GameWidth;
+				_mazeType = newWin.MazeType;
+				_mazeGame = new MazeGameModel(_gameSizeH, _gameSizeW);
+				_mazeGame.CreateMaze(_factory, _mazeType);
+				_mazeGame.Man.SetParam(_roomHeight, _roomWidth);
+				SiteType[][] view = _mazeGame.GetView();
+				//for (int i = 0; i < view.Count(); i++)
+				//	Console.WriteLine(view[i].ToIntString());
 
-			DrawingMaze();
+				DrawingMaze();
+			}
         }
 
 		private int _roomWidth = 22;
@@ -165,7 +177,7 @@ namespace MazeGame {
 			
 			// Create a DrawingGroup
 			DrawingGroup dGroup = new DrawingGroup();
-			dGroup.ClipGeometry = new RectangleGeometry(new Rect(0, 0, _roomWidth * _gameSize, _roomHeight * _gameSize));
+			dGroup.ClipGeometry = new RectangleGeometry(new Rect(0, 0, _roomWidth * _gameSizeW, _roomHeight * _gameSizeH));
 
 			// Obtain a DrawingContext from 
 			// the DrawingGroup.
@@ -184,17 +196,19 @@ namespace MazeGame {
 				// Blurs subsquent drawings. 
 				//dc.PushEffect(new BlurBitmapEffect(), null);
 
-				dc.DrawRectangle(Brushes.White, null, new Rect(0, 0, _roomWidth * _gameSize, _roomHeight * _gameSize));
+				dc.DrawRectangle(Brushes.White, null, new Rect(0, 0, _roomWidth * _gameSizeW, _roomHeight * _gameSizeH));
 
-				for (int i = 0; i < _gameSize; i++) {
-					for (int j = 0; j < _gameSize; j++) {
+				for (int i = 0; i < _gameSizeH; i++) {
+					for (int j = 0; j < _gameSizeW; j++) {
 						DrawSite(dc, i, j, Direction.East, view[i * 2 + 1][j + 1]);
 						DrawSite(dc, i, j, Direction.South, view[i * 2 + 2][j + 1]);
 					}
 				}
 				// draw left-top border
-				for (int i = 0; i < _gameSize; i++) {
+				for (int i = 0; i < _gameSizeW; i++) {
 					DrawSite(dc, 0, i, Direction.North, view[0][i + 1]);
+				}
+				for (int i = 0; i < _gameSizeH; i++) {
 					DrawSite(dc, i, 0, Direction.West, view[i * 2 + 1][0]);
 				}
 
@@ -220,17 +234,40 @@ namespace MazeGame {
 		private MazeGameModel _mazeGame;
 		private MazeFactory _factory = MazeFactory.GetFactroy();
 
+		private DispatcherTimer _timer = new DispatcherTimer();
 		private void Window_KeyUp(object sender, KeyEventArgs e) {
-			if (e.Key == Key.Down) {
-				_mazeGame.Move(Direction.South);	
-			} else if (e.Key == Key.Up) {
+			_timer.Stop();
+		}
+
+		private void Window_KeyDown(object sender, KeyEventArgs e) {
+			if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Left || e.Key == Key.Right) {
+				_timer.Tag = e.Key;
+				_timer.Start();
+            } else {
+				_timer.Stop();
+			}
+		}
+
+		private void _timer_Tick(object sender, EventArgs e) {
+			Key key = (Key)_timer.Tag;
+			if (key == Key.Down) {
+				_mazeGame.Move(Direction.South);
+			} else if (key == Key.Up) {
 				_mazeGame.Move(Direction.North);
-			} else if (e.Key == Key.Left) {
+			} else if (key == Key.Left) {
 				_mazeGame.Move(Direction.West);
-			} else if (e.Key == Key.Right) {
+			} else if (key == Key.Right) {
 				_mazeGame.Move(Direction.East);
 			}
 			DrawingMaze();
+			if (_mazeGame.IsSuccess()) {
+				_timer.Stop();
+				MessageBox.Show("You Win!");
+			}
+		}
+
+		private void Menu_Exit_Click(object sender, RoutedEventArgs e) {
+			Close();
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace MazeGame {
 		public MapMidWare(Room room1, Room room2) {
 			_room1 = room1;
 			_room2 = room2;
-			if (_room2 == null)
+			if (_room1 == null || _room2 == null)
 				return;
 			Location l1 = room1.GetLocation();
 			Location l2 = room2.GetLocation();
@@ -39,7 +39,7 @@ namespace MazeGame {
 
 		public virtual Room Enter(IMapSite srcSite) {
 			Room srcRoom = srcSite as Room;
-			if (srcRoom == null || srcRoom != _room1 || srcRoom != _room2)
+			if (srcRoom == null || (srcRoom != _room1 && srcRoom != _room2))
 				return null;
 
 			// 进入另一侧
