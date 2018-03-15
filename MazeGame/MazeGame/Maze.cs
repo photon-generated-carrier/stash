@@ -5,46 +5,46 @@ using System.Text;
 
 namespace MazeGame {
 	class Maze {
-		public Maze(int gameSizeH, int gameSizeW) {
-			_gameSizeH = gameSizeH;
-			_gameSizeW = gameSizeW;
-			_rooms = new Room[_gameSizeH * _gameSizeW];
+		public Maze(int gameSize) {
+			_gameSize = gameSize;
+			_rooms = new Room[_gameSize * _gameSize];
 		}
 
 		// 使用工厂来初始化room和外墙
 		public void InitialRooms(MazeFactory factory) {
-			for (int x = 0; x < _gameSizeH; x++)
-				for (int y = 0; y < _gameSizeW; y++) {
+			for (int x = 0; x < _gameSize; x++)
+				for (int y = 0; y < _gameSize; y++) {
 					Room newRoom = factory.MakeRoom(new Location(x, y));
 
 					if (x == 0) {
 						new Wall(newRoom, Direction.North);
 					} else {
-						Room northRoom = GetRoom(x - 1, y);
-						northRoom.SetSite(Direction.South, newRoom);
-						newRoom.SetSite(Direction.North, northRoom);
-						if (x == _gameSizeH - 1)
+						Room westRoom = GetRoom(x - 1, y);
+						westRoom.SetSite(Direction.East, newRoom);
+						newRoom.SetSite(Direction.West, westRoom);
+						if (x == _gameSize - 1)
 							new Wall(newRoom, Direction.South);
 					}
 
 					if (y == 0) {
 						new Wall(newRoom, Direction.West);
 					} else {
-						Room westRoom = GetRoom(x, y - 1);
-						westRoom.SetSite(Direction.East, newRoom);
-						newRoom.SetSite(Direction.West, westRoom);
-						if (y == _gameSizeW - 1) {
+						Room northRoom = GetRoom(x, y - 1);
+						northRoom.SetSite(Direction.South, newRoom);
+						newRoom.SetSite(Direction.North, northRoom);
+						if (y == _gameSize - 1) {
 							new Wall(newRoom, Direction.East);
 						}
 					}
 
-					_rooms[x * _gameSizeW + y] = newRoom;
+					_rooms[x * _gameSize + y] = newRoom;
 				}
 		}
 
 		// 生成墙
-		public virtual void GenWalls(MazeFactory factory) {
-			GenSimpleTestWalls();
+		public void GenWalls(MazeFactory factory) {
+			GenSimpleTestWalls(factory);
+			GenBorderCharView();
 		}
 
 		// 简单测试墙
@@ -59,17 +59,17 @@ namespace MazeGame {
 		//|  |_________D_____|
 		//|  -> -> -> -> ->  * out
 		//|------------------|
-		private void GenSimpleTestWalls() {
+		private void GenSimpleTestWalls(MazeFactory factory) {
 			int x = 0, y = 0;
-			for (x = 0; x < _gameSizeH - 1; x++) {
+			for (x = 0; x < _gameSize - 1; x++) {
 				new Wall(GetRoom(x, y), GetRoom(x, y + 1));
 			}
-			for (y = 1; y < _gameSizeW; y++) {
+			for (y = 1; y < _gameSize; y++) {
 				new Wall(GetRoom(x, y), GetRoom(x - 1, y));
 			}
 			new Door(GetRoom(1, 0), GetRoom(1, 1));
 			new Door(GetRoom(1, 1), GetRoom(1, 2));
-			new Door(GetRoom(18, 29), GetRoom(19, 29));
+			new Door(GetRoom(7, 8), GetRoom(8, 8));
 		}
 
 		// 获取地图的边缘字符表示
@@ -84,15 +84,15 @@ namespace MazeGame {
 		//22222222222
 		//22222222229
 		//222222222222
-		public void GenBorderCharView() {
-			_charView = new SiteType[_gameSizeH * 2 + 1][];
+		private void GenBorderCharView() {
+			_charView = new SiteType[_gameSize * 2 + 1][];
 
-			for (int x = 0; x < _gameSizeH * 2 + 1; x++) {
-				_charView[x] = new SiteType[_gameSizeW + 1];
+			for (int x = 0; x < _gameSize * 2 + 1; x++) {
+				_charView[x] = new SiteType[_gameSize + 1];
 			}
 
-			for (int x = 0; x < _gameSizeH; x++) {
-				for (int y = 0; y < _gameSizeW; y++) {
+			for (int x = 0; x < _gameSize; x++) {
+				for (int y = 0; y < _gameSize; y++) {
 					Room currentRoom = GetRoom(x, y);
 					if (currentRoom.GetSite(Direction.East) != null)
 						SetViewSite(x, y, Direction.East, currentRoom.GetSite(Direction.East).Iam());
@@ -102,7 +102,7 @@ namespace MazeGame {
             }
 
 			SetOuterWall();
-        }
+		}
 
 		public SiteType[][] GetCharView() {
 			return _charView;
@@ -110,13 +110,13 @@ namespace MazeGame {
 
 		private void SetOuterWall() {
 			// outer wall
-			for (int x = 1; x < _gameSizeH * 2 + 1; x+=2) {
+			for (int x = 1; x < _gameSize * 2 + 1; x+=2) {
 				_charView[x][0] = SiteType.Wall;
-				_charView[x][_gameSizeW] = SiteType.Wall;
+				_charView[x][_gameSize] = SiteType.Wall;
 			}
-			for (int y = 0; y < _gameSizeW + 1; y++) {
+			for (int y = 0; y < _gameSize + 1; y++) {
 				_charView[0][y] = SiteType.Wall;
-				_charView[_gameSizeH * 2][y] = SiteType.Wall;
+				_charView[_gameSize * 2][y] = SiteType.Wall;
 			}
 		}
 
@@ -125,14 +125,14 @@ namespace MazeGame {
 				return;
 
 			if (direction == Direction.South) {
-				if (x == _gameSizeH - 1)
+				if (x == _gameSize - 1)
 					return;
 
 				_charView[1 + x * 2 + 1][1 + y]= siteType;
 			}
 
 			if (direction == Direction.East) {
-				if (y == _gameSizeW - 1)
+				if (y == _gameSize - 1)
 					return;
 
 				_charView[1 + x * 2][1 + y] = siteType;
@@ -170,18 +170,17 @@ namespace MazeGame {
         }
 
 		public Room GetRoom(int x, int y) {
-			if (!(x < _gameSizeH && y < _gameSizeW))
+			if (!(x < _gameSize && y < _gameSize))
 				return null;
-			return _rooms[x * _gameSizeW + y];
+			return _rooms[x * _gameSize + y];
 		}
 
 		public Room GetRoom(Location location) {
 			return GetRoom(location.X, location.Y);
 		}
 
-		protected Room[] _rooms;
+		private Room[] _rooms;
 		private SiteType[][] _charView;
-		protected int _gameSizeH;
-		protected int _gameSizeW;
+		private int _gameSize;
 	}
 }

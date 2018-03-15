@@ -7,14 +7,14 @@ using System.Windows;
 namespace MazeGame {
 	// model
 	class MazeGameModel {
-		public MazeGameModel(int gameSizeH, int gameSizeW) {
-			_gameSizeH = gameSizeH;
-			_gameSizeW = gameSizeW;
+		public MazeGameModel(int gameSize) {
+			_gameSize = gameSize;
 		}
 
-		public void CreateMaze(MazeFactory factory, MazeType mazeType = MazeType.Prime) {
-			_maze = factory.MakeMaze(_gameSizeH, _gameSizeW, mazeType);
-			
+		public void CreateMaze(MazeFactory factory) {
+			_maze = factory.MakeMaze(_gameSize);
+			_maze.InitialRooms(factory);
+			_maze.GenWalls(factory);
 			SetGameParameters();
 		}
 
@@ -44,10 +44,6 @@ namespace MazeGame {
 			return false;
 		}
 
-		public bool IsSuccess() {
-			return (_man.GetLocation() == _exitLocation);
-		}
-
 		public SiteType[][] GetView() {
 			SiteType[][] view = _maze.GetCharView();
 			SetViewParms(view);
@@ -65,13 +61,12 @@ namespace MazeGame {
 		private void SetGameParameters() {
 			_entryLocation = new Location(0, 0);
 			_man.SetLocation(_entryLocation);
-			_man.SetGameSize(_gameSizeH, _gameSizeW);
-			_exitLocation = new Location(_gameSizeH - 1, _gameSizeW - 1);
+			_man.SetGameSize(_gameSize);
+			_exitLocation = new Location(_gameSize - 1, _gameSize - 1);
 		}
 
 		private Maze _maze;
-		private int _gameSizeH; // height
-		private int _gameSizeW; // width
+		private int _gameSize;
 		private Location _entryLocation;
 		private Location _exitLocation;
 	}

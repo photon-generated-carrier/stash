@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeGame"
         mc:Ignorable="d"
-        Title="MazeGame" Height="350" Width="525" ResizeMode="NoResize" SizeToContent="WidthAndHeight" KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
+        Title="MazeGame" Height="350" Width="525" ResizeMode="NoResize" SizeToContent="WidthAndHeight" KeyUp="Window_KeyUp">
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="文件">
                 <MenuItem Header="新游戏" Click="Menu_NewGame_Click"></MenuItem>
-                <MenuItem Header="退出" Click="Menu_Exit_Click"></MenuItem>
+                <MenuItem Header="退出"></MenuItem>
             </MenuItem>
             <MenuItem Header="帮助"></MenuItem>
         </Menu>
         <Border BorderThickness="1" BorderBrush="#FF409BEA">
-            <Image x:Name="canvas" MinWidth="360" MaxWidth="960" MinHeight="360" MaxHeight="960"></Image>
+            <Image x:Name="canvas" MinWidth="360" MaxWidth="480" MinHeight="360" MaxHeight="480"></Image>
         </Border>
     </DockPanel>
 </Window>

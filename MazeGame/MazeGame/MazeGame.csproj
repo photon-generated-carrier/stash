@@ -59,10 +59,6 @@
     <Compile Include="Maze.cs" />
     <Compile Include="MazeGameModel.cs" />
     <Compile Include="MazeFactory.cs" />
-    <Compile Include="MazePrime.cs" />
-    <Compile Include="NewGameWin.xaml.cs">
-      <DependentUpon>NewGameWin.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Room.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Wall.cs" />
@@ -78,10 +74,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewGameWin.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMapSite.cs" />
